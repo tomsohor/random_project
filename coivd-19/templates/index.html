@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Covid-19</title>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col s1"></div>
+      <div class="col s10 ">
+        <nav>
+          <div class="nav-wrapper hoverable">
+            <a href="#" class="brand-logo center">Covid-19</a>
+          </div>
+        </nav>
+        <br />
+        <div>  
+        <div class="row">
+          <form class="col s12">
+            <div class="row">
+              <div class="input-field col s4">
+                <i class="material-icons prefix">search</i>
+                <input id="icon_prefix" type="text" class="validate myInput">
+                <label for="icon_prefix">Search</label>
+              </div>
+             <ul id='result' class='dropdown-content'></ul>
+            </div>
+          </form>
+        </div>
+
+        <table class="striped">
+          <thead class=" pink lighten-2">
+            <tr>
+              <th class="center">No<span class="right btn" onclick="sort(0)">&#x21BA</span></th>
+                <th class="center">Country<span class="right btn" onclick="sort(1)">&#x21BA</span></th>
+                <th class="center">New Confirmed</th>
+                <th class="center">Total Confirmed</th>
+                <th class="center">New Deaths</th>
+                <th class="center">Total Deaths</th>
+                <th class="center">New Recovered</th>
+                <th class="center">Total Recovered</th>
+            </tr>
+          </thead>
+  
+          <tbody id="myTable">
+            {% for i in range(0,data['Countries']|length) %}
+            <tr>
+              <td class="center">{{i+1}}</td>
+              <td class="center name">{{ data['Countries'][i]['Country'] }}</td>
+              <td class="center">{{ data['Countries'][i]["NewConfirmed"] }}</td>
+              <td class="center">{{ data['Countries'][i]['TotalConfirmed'] }}</td>
+              <td class="center">{{ data['Countries'][i]['NewDeaths'] }}</td>
+              <td class="center">{{ data['Countries'][i]['TotalDeaths'] }}</td>
+              <td class="center">{{ data['Countries'][i]['NewRecovered'] }}</td>
+              <td class="center">{{ data['Countries'][i]['TotalRecovered'] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </div>
+      </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+      $("#icon_prefix").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+        
+      });
+    });
+
+    function sort(n){
+      alert(hi)
+    }
+    </script>
+    
+  </body>
+</html>
