@@ -1,0 +1,19 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "chat app",
+  "main": "server",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/tomsohor/random_project.git"
+  },
+  "author": "kanya tom",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tomsohor/random_project/issues"
+  },
+  "homepage": "https://github.com/tomsohor/random_project#readme"
+}
