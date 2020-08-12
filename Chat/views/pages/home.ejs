@@ -14,7 +14,15 @@
     <title><%= title %></title>
   </head>
   <body>
-    <%- include('../components/navbar')-%>
-    <h1>hi <%= name %></h1>
+    <div class="row">
+      <div class="col s1"></div>
+      <div class="col s10">
+        <%- include('../components/navbar')-%>
+        <div class="row">
+          <div class="col s4"></div>
+          <div class="col s8"></div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
