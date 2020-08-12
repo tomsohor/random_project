@@ -5,16 +5,17 @@ const User = require("../models/user");
 const passport = require("passport");
 require("../auth");
 
-router.get("/", (req, res) => {
+router.get("/", checkAuthentication, (req, res) => {
   res.render("home", { title: "Chat-App", name: req.user });
 });
 
-router.get("/login", (req, res) => {
+router.get("/login", checkNotAuthentication, (req, res) => {
   res.render("login", { title: "ChatApp - Login" });
 });
 
 router.post(
   "/login",
+  checkNotAuthentication,
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/login",
@@ -23,11 +24,11 @@ router.post(
 );
 
 // sign up block
-router.get("/signup", (req, res) => {
+router.get("/signup", checkNotAuthentication, (req, res) => {
   res.render("signup", { title: "ChatApp - SignUp" });
 });
 
-router.post("/signup", (req, res) => {
+router.post("/signup", checkAuthentication, (req, res) => {
   const pwd = req.body.password;
   const con_pwd = req.body.confirm_password;
   if (pwd != con_pwd) {
@@ -50,4 +51,23 @@ router.post("/signup", (req, res) => {
   }
 });
 
+router.get("/logout", (req, res) => {
+  req.logOut();
+  res.redirect("/login");
+});
+
+function checkAuthentication(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+
+  res.redirect("/login");
+}
+
+function checkNotAuthentication(req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.redirect("/");
+  }
+  next();
+}
 module.exports = router;

@@ -9,6 +9,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const flash = require("express-flash");
+const methodOverride = require("method-override");
 
 const app = express();
 const port = process.env.PORT;
@@ -16,6 +17,7 @@ const db = process.env.dbURL;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 //session set up
 app.use(
