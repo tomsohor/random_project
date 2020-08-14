@@ -6,18 +6,43 @@ const passport = require("passport");
 require("../auth");
 
 router.get("/", checkAuthentication, (req, res) => {
-  res.render("home", { title: "Chat-App", name: req.user });
+  res.render("home", { title: "Chat-App" });
 });
 
-router.get("/login", checkNotAuthentication, (req, res) => {
+router.get("/chat", checkAuthentication, (req, res) => {
+  var people = [];
+  User.find({}).then((user) => {
+    user.forEach((u) => {
+      if (u["username"] != req.user.username) {
+        people.push(u["username"]);
+      }
+    });
+
+    res.render("home", { title: "Chat-App", names: people, owner: req.user });
+  });
+});
+
+// router.get("/chat/:chater", checkAuthentication, (req, res) => {
+//   const para = req.params.chater;
+//   const route = "/chat/".concat(para);
+//   console.log(route);
+//   req.io.sockets.on("chat message", (msg) => {
+//     io.emit("chat message", msg);
+//   });
+//   const chat = para.split("-");
+//   chat.pop();
+//   res.render("directChat", { title: "Chat-App", names: chat, owner: req.user });
+// });
+
+router.get("/login", (req, res) => {
   res.render("login", { title: "ChatApp - Login" });
 });
 
 router.post(
   "/login",
-  checkNotAuthentication,
+
   passport.authenticate("local", {
-    successRedirect: "/",
+    successRedirect: "/chat",
     failureRedirect: "/login",
     failureFlash: true,
   })
@@ -28,27 +53,21 @@ router.get("/signup", checkNotAuthentication, (req, res) => {
   res.render("signup", { title: "ChatApp - SignUp" });
 });
 
-router.post("/signup", checkAuthentication, (req, res) => {
-  const pwd = req.body.password;
-  const con_pwd = req.body.confirm_password;
-  if (pwd != con_pwd) {
-    res.render("signup", { title: "ChatApp - SignUp" });
-  } else {
-    const { username, email, password, confirm_password } = req.body;
-    bcrypt.genSalt(10, function (err, salt) {
-      bcrypt.hash(password, salt, function (err, hash) {
-        User.create({
-          username: username,
-          email: email,
-          password: hash,
-        })
-          .then(() => console.log("insert into database"))
-          .catch((e) => console.log(e));
-      });
+router.post("/signup", checkNotAuthentication, (req, res) => {
+  const { username, email, password } = req.body;
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash(password, salt, function (err, hash) {
+      User.create({
+        username: username,
+        email: email,
+        password: hash,
+      })
+        .then(() => console.log("insert into database"))
+        .catch((e) => console.log(e));
     });
+  });
 
-    res.redirect("login");
-  }
+  res.redirect("login");
 });
 
 router.get("/logout", (req, res) => {
@@ -66,7 +85,7 @@ function checkAuthentication(req, res, next) {
 
 function checkNotAuthentication(req, res, next) {
   if (req.isAuthenticated()) {
-    return res.redirect("/");
+    return res.redirect("/chat");
   }
   next();
 }

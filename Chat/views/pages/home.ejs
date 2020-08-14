@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="css/main.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
@@ -11,18 +12,62 @@
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    
     <title><%= title %></title>
   </head>
   <body>
     <div class="row">
       <div class="col s1"></div>
+
       <div class="col s10">
-        <%- include('../components/navbar')-%>
         <div class="row">
-          <div class="col s4"></div>
-          <div class="col s8"></div>
-        </div>
-      </div>
-    </div>
+          <%- include('../components/navbar')-%>
+          <div class="col s12">
+            
+            <div class="col s4 blue-grey darken-1">
+              
+              <ul style="margin-top: 50px;">
+                <h5 class="white-text center" style="margin-bottom: 30px;">Members:</h5>
+                <% names.forEach(name =>{ %>
+                <li class="center"><div class="chip" style="width: 140px;">
+                  <img src="images/images.png" alt="Contact Person" />
+                  <span class="right"><%=name%></span>
+                </div>
+              </li>
+                <% }) %>
+              </ul>
+              </li>
+            </div>
+            <div class="col s8 black">
+              <div style="overflow-y:auto" ><ul id="messages" class="white-text" ></ul></div>
+             
+                
+                <form action="" method="POST" style="position:relative;">
+                  <input id="m" autocomplete="off" id="first_name" type="text" class="validate col s10 white-text" >
+                <button
+                  style="width: 80px;height: 50px;"
+                  type="submit"
+                  name="btn_login"
+                  class="col s6 btn btn-small white black-text waves-effect z-depth-1 y-depth-1 right"
+                >
+                  Send
+                </button></div>
+              
+                
+              </form>
+            </div>
+            
+            
+             </div>
+
+             <script src="/socket.io/socket.io.js"></script>
+             <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+             <script src="js/socket.js">
+             </script>
+             <script>
+               const user = ' <%=owner.username%>'
+               document.getElementsByClassName('sender').style.color = blue;
+             </script>
+             
   </body>
 </html>

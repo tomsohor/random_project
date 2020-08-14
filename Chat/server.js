@@ -15,9 +15,14 @@ const app = express();
 const port = process.env.PORT;
 const db = process.env.dbURL;
 
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
+
+const message = require("./models/message");
 
 //session set up
 app.use(
@@ -41,11 +46,36 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("connected to db"))
+  // .then(() => console.log("connected to db"))
   .catch((e) => console.log(e));
+
+// this socket for main page
+
+// io.on("connection", (socket) => {
+//   socket.on("chat message", (msg) => {
+//     io.emit("chat message", msg);
+//   });
+// });
+
+const nsp = io.of("/chat");
+nsp.on("connection", (socket) => {
+  // console.log("someone connected");
+
+  message.find().then((mes) => {
+    socket.emit("chat History", mes);
+  });
+
+  socket.on("chat message", (data) => {
+    message
+      .create({ sender: data[0], content: data[1] })
+      .then(() => console.log("message inserted"))
+      .catch((e) => console.log(e));
+    socket.emit("chat message", data);
+  });
+});
 
 app.use("/", require("./routes/routes"));
 
-app.listen(port, () => {
+http.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

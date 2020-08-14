@@ -1,3 +1,28 @@
 body {
   background-color: gray;
+  height: 1050px;
+  width: 1920 px;
+}
+
+.brand-logo {
+  margin-left: 20px;
+}
+.col .s12 {
+  margin-left: 2px 2px 2px 20px;
+  background-color: #546e7a;
+  height: 1030px;
+  box-shadow: 0px 2px 2px 2px #455a64;
+}
+
+.nav-wrapper {
+  box-shadow: 2px 0px 2px 0px #90a4ae;
+}
+.col .s4 {
+  height: 1030px;
+}
+.col .s8 {
+  height: 1030px;
+}
+#messages {
+  height: 950px;
 }
